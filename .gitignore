@@ -1,4 +1,5 @@
 .idea
 capture*.pcap
+capture*.csv
 
 .DS_Store

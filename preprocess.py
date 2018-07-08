@@ -4,7 +4,7 @@ if __name__ == '__main__':
     headers = ['No.', 'Time', 'Source', 'Destination', 'Protocol', 'Length', 'Info', 'host']
     my_dict = dict()
     hosts = set()
-    with open('capture5.csv', 'r') as readFile:
+    with open('http-requests.csv', 'r') as readFile:
         reader = csv.DictReader(readFile)
         for row in reader:
             if row['host'] != '':
@@ -15,7 +15,7 @@ if __name__ == '__main__':
     hosts = list(hosts)
     hosts.sort()
 
-    with open('processed_capture5.csv', 'w') as writeFile:
+    with open('processed_requests.csv', 'w') as writeFile:
         writer = csv.DictWriter(writeFile, fieldnames=hosts)
         writer.writeheader()
 
