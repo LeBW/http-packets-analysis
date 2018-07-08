@@ -1,26 +1,49 @@
 import csv
 
-if __name__ == '__main__':
-    headers = ['No.', 'Time', 'Source', 'Destination', 'Protocol', 'Length', 'Info', 'host']
+host_dict = dict()
+
+
+def txt_to_dict(file_name):
+    with open(file_name, 'r') as f:
+        for line in f:
+            line = line.strip('\n')
+            host, feature = line.split(' ')
+            host_dict[host] = feature
+
+
+def host_in_dict(host):
+    for key in host_dict:
+        if key in host:
+            return host_dict[key]
+    return -1
+
+
+def pre_process():
     my_dict = dict()
-    hosts = set()
     with open('http-requests.csv', 'r') as readFile:
         reader = csv.DictReader(readFile)
         for row in reader:
             if row['host'] != '':
                 if row['Source'] not in my_dict:
                     my_dict[row['Source']] = set()
-                my_dict[row['Source']].add(row['host'])
-                hosts.add(row['host'])
-    hosts = list(hosts)
-    hosts.sort()
+                feature = host_in_dict(row['host'])
+                if feature != -1:
+                    my_dict[row['Source']].add(feature)
 
+    features = list(set(host_dict.values()))
+    features.sort()
+    print(features)
     with open('processed_requests.csv', 'w') as writeFile:
-        writer = csv.DictWriter(writeFile, fieldnames=hosts)
+        writer = csv.DictWriter(writeFile, fieldnames=features)
         writer.writeheader()
 
         for value in my_dict.values():
-            rowDict = {host: 0 for host in hosts}
+            row_dict = {feature: 0 for feature in features}
             for i in value:
-                rowDict[i] = 1
-            writer.writerow(rowdict=rowDict)
+                row_dict[i] = 1
+            writer.writerow(rowdict=row_dict)
+
+
+if __name__ == '__main__':
+    txt_to_dict('host_dict.txt')
+    pre_process()
