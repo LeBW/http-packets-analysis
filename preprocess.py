@@ -38,9 +38,9 @@ def pre_process():
         writer.writeheader()
 
         for value in my_dict.values():
-            row_dict = {feature: 0 for feature in features}
+            row_dict = {feature: '' for feature in features}
             for i in value:
-                row_dict[i] = 1
+                row_dict[i] = 'TRUE'
             writer.writerow(rowdict=row_dict)
 
 
